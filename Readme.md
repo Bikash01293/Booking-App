@@ -1,3 +1,7 @@
+#POstman Collection link below:
+
+https://documenter.getpostman.com/view/16111145/2s93saZD44
+
 #command to start project
 
 Step1: npm install
