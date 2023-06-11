@@ -13,7 +13,7 @@ const register = async (req, res) => {
 
       //Check if user already exists
       try {
-        await admin.auth.getUserByEmail(email);
+        await admin.auth().getUserByEmail(email);
         return res.status(200).json({message: `${email} is already registered. Please use another email.`});
       } catch(error) {
         if(error.code != 'auth/user-not-found') {
