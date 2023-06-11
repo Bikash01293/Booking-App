@@ -10,13 +10,23 @@ const register = async (req, res) => {
       if (!email || !password) {
         return res.status(400).json({ error: 'Email and password are required' });
       }
-  
+
+      //Check if user already exists
+      try {
+        await admin.auth.getUserByEmail(email);
+        return res.status(200).json({message: `${email} is already registered. Please use another email.`});
+      } catch(error) {
+        if(error.code != 'auth/user-not-found') {
+          throw error;
+        }
+      }
+      
+      //Continue with user registration if user does not exist
       // Create the user using Firebase Authentication
       await admin.auth().createUser({
         email,
         password
       });
-  
       res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
       console.error('Error registering user:', error);
@@ -33,7 +43,7 @@ const login = async (req, res) => {
       const user = userRecord.uid;
   
       // Generate JWT token for authorization
-      const token = jwt.sign({ user }, 'my-secret'); 
+      const token = jwt.sign({ user }, process.env.SECRET_KEY); 
   
       res.status(200).json({ token });
     } catch (error) {

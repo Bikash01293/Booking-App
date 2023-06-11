@@ -7,9 +7,8 @@ const authenticateUser = (req, res, next) => {
     if (!token) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-  
     try {
-      const decodedToken = jwt.verify(token, 'my-secret'); // Replace 'your-secret-key' with your own secret key
+      const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
       req.user = decodedToken.user;
       next();
     } catch (error) {
