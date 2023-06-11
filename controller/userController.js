@@ -27,7 +27,7 @@ const register = async (req, res) => {
         email,
         password
       });
-      res.status(201).json({ message: 'User registered successfully' });
+      return res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
       console.error('Error registering user:', error);
       res.status(500).json({ error: 'Failed to register user' });
@@ -45,10 +45,10 @@ const login = async (req, res) => {
       // Generate JWT token for authorization
       const token = jwt.sign({ user }, process.env.SECRET_KEY); 
   
-      res.status(200).json({ token });
+      return res.status(200).json({ token });
     } catch (error) {
       console.error('Error authenticating user:', error);
-      res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
 }
 
@@ -65,10 +65,10 @@ const createAppointment = async (req, res) => {
       const newAppointmentRef = await admin.database().ref('appointments').push();
       await newAppointmentRef.set(Appointment);
   
-      res.status(201).json({ message: 'Appointment created successfully' });
+      return res.status(201).json({ message: 'Appointment created successfully' });
     } catch (error) {
       console.error('Error creating appointment:', error);
-      res.status(500).json({ error: 'Failed to create appointment' });
+      return res.status(500).json({ error: 'Failed to create appointment' });
     }
 }
 
@@ -77,10 +77,10 @@ const getAppointments = async (req, res) => {
       // Retrieve all appointments from Firebase Realtime Database
       const snapshot = await admin.database().ref('appointments').once('value');
       const appointments = snapshot.val();
-      res.status(200).json(appointments);
+      return res.status(200).json(appointments);
     } catch (error) {
       console.error('Error retrieving appointments:', error);
-      res.status(500).json({ error: 'Failed to retrieve appointments' });
+      return res.status(500).json({ error: 'Failed to retrieve appointments' });
     }
 }
 
@@ -96,10 +96,10 @@ const getAppointmentById = async (req, res) => {
         return res.status(404).json({ error: 'Appointment not found' });
       }
   
-      res.status(200).json(appointment);
+      return res.status(200).json(appointment);
     } catch (error) {
       console.error('Error retrieving appointment:', error);
-      res.status(500).json({ error: 'Failed to retrieve appointment' });
+      return res.status(500).json({ error: 'Failed to retrieve appointment' });
     }
 }
 
@@ -128,10 +128,10 @@ const updateAppointment = async (req, res) => {
       // Update a specific appointment in Firebase Realtime Database by its ID
       await admin.database().ref(`appointments/${appointmentId}`).update(updatedFields);
   
-      res.status(200).json({ message: 'Appointment updated successfully' });
+      return res.status(200).json({ message: 'Appointment updated successfully' });
     } catch (error) {
       console.error('Error updating appointment:', error);
-      res.status(500).json({ error: 'Failed to update appointment' });
+      return res.status(500).json({ error: 'Failed to update appointment' });
     }
 }
 
@@ -142,10 +142,10 @@ const deleteAppointment = async (req, res) => {
       // Delete a specific appointment from Firebase Realtime Database by its ID
       await admin.database().ref(`appointments/${appointmentId}`).remove();
   
-      res.status(200).json({ message: 'Appointment deleted successfully' });
+      return res.status(200).json({ message: 'Appointment deleted successfully' });
     } catch (error) {
       console.error('Error deleting appointment:', error);
-      res.status(500).json({ error: 'Failed to delete appointment' });
+      return res.status(500).json({ error: 'Failed to delete appointment' });
     }
 }
 
