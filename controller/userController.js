@@ -29,8 +29,7 @@ const register = async (req, res) => {
       });
       return res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-      console.error('Error registering user:', error);
-      res.status(500).json({ error: 'Failed to register user' });
+      return res.status(500).json({ error: 'Failed to register user' });
     }
 }
 
@@ -47,7 +46,6 @@ const login = async (req, res) => {
   
       return res.status(200).json({ token });
     } catch (error) {
-      console.error('Error authenticating user:', error);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 }
@@ -56,10 +54,10 @@ const createAppointment = async (req, res) => {
     try {
       const { date, time, user, status } = req.body;
 
-      Appointment.date = date
-      Appointment.time = time
-      Appointment.user = user
-      Appointment.status = status
+      Appointment.date = date;
+      Appointment.time = time;
+      Appointment.user = user;
+      Appointment.status = status;
   
       // Create a new appointment in Firebase Realtime Database
       const newAppointmentRef = await admin.database().ref('appointments').push();
@@ -67,7 +65,6 @@ const createAppointment = async (req, res) => {
   
       return res.status(201).json({ message: 'Appointment created successfully' });
     } catch (error) {
-      console.error('Error creating appointment:', error);
       return res.status(500).json({ error: 'Failed to create appointment' });
     }
 }
@@ -79,7 +76,6 @@ const getAppointments = async (req, res) => {
       const appointments = snapshot.val();
       return res.status(200).json(appointments);
     } catch (error) {
-      console.error('Error retrieving appointments:', error);
       return res.status(500).json({ error: 'Failed to retrieve appointments' });
     }
 }
@@ -98,7 +94,6 @@ const getAppointmentById = async (req, res) => {
   
       return res.status(200).json(appointment);
     } catch (error) {
-      console.error('Error retrieving appointment:', error);
       return res.status(500).json({ error: 'Failed to retrieve appointment' });
     }
 }
@@ -130,7 +125,6 @@ const updateAppointment = async (req, res) => {
   
       return res.status(200).json({ message: 'Appointment updated successfully' });
     } catch (error) {
-      console.error('Error updating appointment:', error);
       return res.status(500).json({ error: 'Failed to update appointment' });
     }
 }
@@ -144,7 +138,6 @@ const deleteAppointment = async (req, res) => {
   
       return res.status(200).json({ message: 'Appointment deleted successfully' });
     } catch (error) {
-      console.error('Error deleting appointment:', error);
       return res.status(500).json({ error: 'Failed to delete appointment' });
     }
 }
